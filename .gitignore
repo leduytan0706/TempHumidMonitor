@@ -1,0 +1,5 @@
+TempHumid_Sensor/.pio
+TempHumid_Sensor/.vscode
+TempHumid_Web/vite-project/.env
+TempHumid_Web/vite-project/node_modules
+TempHumid_Web/vite-project/package.json
