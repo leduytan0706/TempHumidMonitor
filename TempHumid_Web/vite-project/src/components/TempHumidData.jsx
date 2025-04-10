@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { onValue, ref } from "firebase/database";
+
 import {realTimeDatabase as rtdb, fireStoreDatabase as fsdb} from "../lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import listenToRealtimeData from "../utils/listenToRealtimeData";
+import { Thermometer, Droplet } from "lucide-react";
+import "./TempHumidData.css";
 
-const RealtimeData = () => {
+const TempHumidData = () => {
   const [sensorData, setSensorData] = useState({
     temperature: "--",
     humidity: "--"
@@ -76,11 +78,25 @@ const RealtimeData = () => {
   }, [sensorThreshold]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold">Nhiệt độ: {sensorData.temperature}°C</h2>
-      <h2 className="text-xl font-semibold">Độ ẩm: {sensorData.humidity}%</h2>
-    </div>
+    <>
+      <div className="dashboard-card-header align-left">
+        <h3 className='dashboard-card-title'>
+          Nhiệt độ và độ ẩm hiện tại
+        </h3>
+      </div>
+      <div className="dashboard-card-content">
+        
+        <p className="dashboard-card-text align-left">
+          <Thermometer className="dashboard-card-icon" />
+          <span>Nhiệt độ hiện tại: {sensorData.temperature}°C </span>
+        </p>
+        <p className="dashboard-card-text align-left">
+          <Droplet className="dashboard-card-icon"/>
+          <span>Độ ẩm hiện tại: {sensorData.humidity}%</span>
+        </p>
+      </div>
+    </>
   );
 };
 
-export default RealtimeData;
+export default TempHumidData;

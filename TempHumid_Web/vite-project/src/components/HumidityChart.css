@@ -1,0 +1,15 @@
+.humid-chart-container{
+    width: 100%;
+    min-width: 600px;
+    height: 300px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    h3{
+        padding: 0;
+        margin: 0;
+    }
+}

@@ -6,18 +6,16 @@
 #include "addons/TokenHelper.h"
 // Thêm các tiêu đề hỗ trợ RTDB
 #include "addons/RTDBHelper.h"
+#include "secrets.h"
 
 // Cấu hình WiFi
-#define WIFI_SSID "Wokwi-GUEST"
-#define WIFI_PASSWORD ""
+
 
 // Cấu hình Firebase
-#define API_KEY "AIzaSyDbejSgIGlzD-r_QYt9asFTizS52XIAMTw"
-#define DATABASE_URL "https://temphumidsensor-27c1d-default-rtdb.asia-southeast1.firebasedatabase.app"
+
 
 // Cấu hình tài khoản Firebase (tùy chọn)
-#define USER_EMAIL "testuser@gmail.com"
-#define USER_PASSWORD "12345678"
+
 
 #define DHTPIN 14         // Chân kết nối DHT22
 #define DHTTYPE DHT22    // Loại cảm biến DHT22
