@@ -6,16 +6,10 @@
 #include "addons/TokenHelper.h"
 // Thêm các tiêu đề hỗ trợ RTDB
 #include "addons/RTDBHelper.h"
-#include "secrets.h"
-
 // Cấu hình WiFi
-
-
 // Cấu hình Firebase
-
-
 // Cấu hình tài khoản Firebase (tùy chọn)
-
+#include "secrets.h" // Thư mục chứa thông tin cấu hình WiFi, Firebase và tài khoản
 
 #define DHTPIN 14         // Chân kết nối DHT22
 #define DHTTYPE DHT22    // Loại cảm biến DHT22
@@ -46,16 +40,18 @@ bool isFanOn = false;
 void streamCallback(FirebaseStream data){
     // In đường dẫn của dữ liệu đã thay đổi
     Serial.printf("Phát hiện thay đổi tại đường dẫn: %s\n", data.dataPath().c_str());
+    Serial.printf("Đường dẫn theo dõi: %s\n", data.streamPath().c_str());
     
     // In toàn bộ nội dung dữ liệu
-    Serial.printf("Dữ liệu: %.2F\n", data.doubleData());
+    Serial.printf("Dữ liệu: %.2f\n", data.doubleData());
 
     // Kiểm tra đường dẫn có thay đổi và cập nhật biến tương ứng
     String path = data.dataPath();
+    Serial.println(path);
     
     // Xử lý khi đường dẫn là maxTemp
     if (path == "/maxTemp") {
-        if (data.dataType() == "int" || data.dataType() == "double") {
+        if (data.dataType() == "float" || data.dataType() == "double") {
           // Cập nhật ngưỡng tối đa của nhiệt độ
           max_temp = data.doubleData();
           Serial.printf("Cập nhật giá trị giới hạn nhiệt độ: %.2f\n", max_temp);
@@ -63,7 +59,7 @@ void streamCallback(FirebaseStream data){
     }
 
     else if (path == "/maxHumid") {
-        if (data.dataType() == "int" || data.dataType() == "double") {
+        if (data.dataType() == "float" || data.dataType() == "double") {
           // Cập nhật ngưỡng tối đa của độ ẩm
           max_humid = data.doubleData();
           Serial.printf("Cập nhật giá trị giới hạn độ ẩm: %.2f\n", max_humid);
@@ -260,16 +256,19 @@ void loop() {
   static float lastTemp = -999; // Khởi tạo biến status lưu lại nhiệt độ hiện tại
   static float lastHumid = -999; // Khởi tạo biến status lưu lại độ ẩm hiện tại
 
-
+  // Nếu chênh lệch nhiệt độ lớn hơn ngưỡng quy định, lưu vào firebase
   if (abs(t - lastTemp) >= temp_diff) {
     Firebase.RTDB.setDouble(&fbdo, "/sensor/temperature", t);
     lastTemp = t;
   }
 
+  // Nếu chênh lệch độ ẩm lớn hơn ngưỡng quy định, lưu vào firebase
   if (abs(h - lastHumid) >= humid_diff) {
     Firebase.RTDB.setDouble(&fbdo, "/sensor/humidity", h);
     lastHumid = h;
   }
   
-  delay(3000);
+
+  // đợi khoảng 3 phút trước khi tiếp tục đo
+  delay(10000);
 }

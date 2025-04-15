@@ -32,12 +32,10 @@ const ModifyThreshold = () => {
         e.preventDefault();
         console.log(sensorThreshold);
         try {
-            await set(ref(rtdb, "/threshold"), {
-                maxTemp: sensorThreshold.maxTemp || null,
-                maxHumid: sensorThreshold.maxHumid || null,
-                tempThreshold: sensorThreshold.tempThreshold || null,
-                humidThreshold: sensorThreshold.humidThreshold || null
-            });
+            await set(ref(rtdb, "/threshold/maxTemp"), sensorThreshold.maxTemp || null);
+            await set(ref(rtdb, "/threshold/maxHumid"), sensorThreshold.maxHumid || null);
+            await set(ref(rtdb, "/threshold/tempThreshold"), sensorThreshold.tempThreshold || null);
+            await set(ref(rtdb, "/threshold/humidThreshold"), sensorThreshold.humidThreshold || null);
             toast.success("Cập nhật dữ liệu thành công!");
         } catch (error) {
             console.log(`Error in ModifyThreshold submit function: ${error.message}`);
